@@ -35,6 +35,10 @@ param appServicePlanName string
 @description('Name of the Azure Key Vault used to store secrets and keys securely')
 param keyVaultUri string
 
+@description('Name of the Azure Container Registry for storing container images')
+param containerRegistryName string
+
+
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' existing =  {
   name: resourceGroupName
 }
@@ -55,5 +59,17 @@ module apiWebApp 'api-web-app.bicep' = {
   }
 }
 
+
+module mcpContainerApps 'mcp-container-app.bicep' = {
+  name: 'mcpContainerApps'
+  scope: resourceGroup
+  params: {
+    location: location
+    managedIdentityName: managedIdentityName
+    containerAppBaseName: '${projectName}-${environmentName}-${resourceToken}'
+    containerRegistryName: containerRegistryName
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+  }
+}
 
 output apiAppName string =  apiWebApp.outputs.webAppName

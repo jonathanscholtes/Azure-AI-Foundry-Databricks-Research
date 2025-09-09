@@ -74,6 +74,27 @@ $OpenAIEndPoint = $deploymentOutputJsonInfra.OpenAIEndPoint.value
 $containerRegistryName = $deploymentOutputJsonInfra.containerRegistryName.value
 
 
+Write-Host "=== Building Images for MCP Server ==="
+Write-Host "Using ACR: $containerRegistryName"
+Write-Host "Resource Group: $rgName`n"
+
+# Define image names and paths
+$images = @(
+    @{ name = "sales-mcp"; path = ".\src\MCP\sales" }
+)
+
+# Build images
+foreach ($image in $images) {
+    Write-Host "Building image '$($image.name):latest' from '$($image.path)'..."
+    Write-Host "az acr build --resource-group $rgName --registry $containerRegistryName --image $($image.name):latest $image.path"
+
+    az acr build `
+        --resource-group $rgName `
+        --registry $containerRegistryName `
+        --image "$($image.name):latest" `
+        $image.path
+}
+
 # Step 2: Deploy Apps
 $deploymentNameApps = "deployment-demo-sales-$resourceToken"
 $appsTemplateFile = "infra/app/main.bicep"
@@ -92,6 +113,7 @@ $deploymentOutputApps = az deployment sub create  `
         appInsightsName=$applicationInsightsName `
         appServicePlanName=$appServicePlanName `
         keyVaultUri=$keyVaultUri `
+        containerRegistryName=$containerRegistryName `
     --query "properties.outputs"
 
 

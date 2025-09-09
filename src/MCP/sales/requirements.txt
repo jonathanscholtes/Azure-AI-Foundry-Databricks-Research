@@ -1,0 +1,7 @@
+httpx
+uvicorn
+mcp==1.13.0
+python-dotenv==1.0.0
+databricks-sql-connector==4.1.2
+azure-core==1.30.2
+azure-identity==1.17.1
