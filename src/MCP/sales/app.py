@@ -77,10 +77,11 @@ def get_orders(
             o.order_date,
             o.region,
             p.product_id,
+            p.product_name,
             ol.quantity,
             ol.unit_price,
             ROUND((ol.quantity * ol.unit_price) * (1 - ol.discount), 2) AS line_unit_price
-        FROM orders o
+        FROM sales_orders o
         JOIN customers c ON o.customer_id = c.customer_id
         JOIN order_lines ol ON o.order_id = ol.order_id
         JOIN products p ON ol.product_id = p.product_id
@@ -100,6 +101,7 @@ def get_orders(
                 "order_date": r["order_date"],
                 "region": r["region"],
                 "product_id": r["product_id"],
+                "product_name": r["product_name"],
                 "quantity": r["quantity"],
                 "unit_price": r["unit_price"],
                 "line_unit_price": r["line_unit_price"],
@@ -265,71 +267,6 @@ def get_products(
         return [{"error": str(e)}]
 
 
-@app.tool()
-def list_tables() -> List[str]:
-    """
-    List all available tables in the Databricks schema.
-
-    Use this tool when you need to explore the database structure
-    before forming custom queries.
-    """
-    try:
-        rows = run_dbquery("SHOW TABLES")
-
-        # Determine if rows are dicts or tuples
-        if rows and isinstance(rows[0], dict):
-            return [r["tableName"] for r in rows]
-        elif rows:
-            # Assume 'tableName' is the second column in the result
-            return [r[1] for r in rows]
-        else:
-            return []
-
-    except Exception as e:
-        logger.exception("Error in list_tables tool")
-        return [{"error": str(e)}]
-
-
-@app.tool()
-def run_query(sql: str) -> dict:
-    """
-    Run a custom SQL query against Databricks.
-
-    Restrictions:
-    - Only SELECT statements are allowed.
-    - Results are limited to 500 rows.
-
-    Use this tool for advanced analysis that cannot be handled by
-    get_orders, get_customers, or get_products.
-
-    Returns:
-    - columns: list of column names
-    - rows: list of row values
-    """
-    try:
-        if not sql.strip().lower().startswith("select"):
-            return {"error": "Only SELECT queries are allowed."}
-
-        rows = run_dbquery(sql)
-
-        if not rows:
-            return {"columns": [], "rows": []}
-
-        # Determine if rows are dicts or tuples
-        if isinstance(rows[0], dict):
-            columns = list(rows[0].keys())
-            data_rows = [list(r.values()) for r in rows]
-        else:
-            # fallback: convert tuple rows to list
-            # assume column order unknown, return generic indices
-            columns = [f"col_{i}" for i in range(len(rows[0]))]
-            data_rows = [list(r) for r in rows]
-
-        return {"columns": columns, "rows": data_rows}
-
-    except Exception as e:
-        logger.exception("Error in run_query tool")
-        return {"error": str(e)}
 
 
 if __name__ == "__main__":
