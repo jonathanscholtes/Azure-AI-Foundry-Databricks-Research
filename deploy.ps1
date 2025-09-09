@@ -1,9 +1,17 @@
 param (
     [string]$Subscription,
-    [string]$Location = "eastus2"
-
+    [string]$Location = "eastus2",
+    [string]$AILocation
 )
 
+# If $AILocation is not provided, default it to $Location
+if (-not $AILocation) {
+    $AILocation = $Location
+}
+
+Write-Host "Subscription: $Subscription"
+Write-Host "Location: $Location"
+Write-Host "AI Location: $AILocation"
 
 # Variables
 $projectName = "sales"
@@ -58,6 +66,7 @@ $deploymentOutput = az deployment sub create `
         projectName=$projectName `
         resourceToken=$resourceToken `
         location=$Location `
+        AIlocation=$AILocation `
     --query "properties.outputs"
 
 
@@ -76,7 +85,7 @@ $containerRegistryName = $deploymentOutputJsonInfra.containerRegistryName.value
 
 Write-Host "=== Building Images for MCP Server ==="
 Write-Host "Using ACR: $containerRegistryName"
-Write-Host "Resource Group: $rgName`n"
+Write-Host "Resource Group: $resourceGroupName`n"
 
 # Define image names and paths
 $images = @(
@@ -86,10 +95,10 @@ $images = @(
 # Build images
 foreach ($image in $images) {
     Write-Host "Building image '$($image.name):latest' from '$($image.path)'..."
-    Write-Host "az acr build --resource-group $rgName --registry $containerRegistryName --image $($image.name):latest $image.path"
+    Write-Host "az acr build --resource-group $resourceGroupName --registry $containerRegistryName --image $($image.name):latest $image.path"
 
     az acr build `
-        --resource-group $rgName `
+        --resource-group $resourceGroupName `
         --registry $containerRegistryName `
         --image "$($image.name):latest" `
         $image.path

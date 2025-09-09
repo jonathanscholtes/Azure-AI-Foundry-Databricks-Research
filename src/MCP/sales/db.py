@@ -17,7 +17,7 @@ def get_connection():
         access_token=environ.get("DATABRICKS_TOKEN")
     )
 
-def run_query(query: str, params: Dict[str, Any] = {}) -> List[Tuple]:
+def run_dbquery(query: str, params: Dict[str, Any] = {}) -> List[Tuple]:
     """
     Executes a SQL query with optional named parameters and returns all rows.
 
@@ -31,4 +31,5 @@ def run_query(query: str, params: Dict[str, Any] = {}) -> List[Tuple]:
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, params)
-            return cursor.fetchall()
+            columns = [col[0] for col in cursor.description]
+            return [dict(zip(columns, row)) for row in cursor.fetchall()]

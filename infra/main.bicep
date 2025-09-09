@@ -19,6 +19,10 @@ param resourceToken string
 @description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
 
+@minLength(1)
+@description('Azure region where all AI resources will be deployed (e.g., "eastus")')
+param AIlocation string
+
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' = {
   name: 'rg-${projectName}-${environmentName}-${location}-${resourceToken}'
   location: location
@@ -77,7 +81,7 @@ module ai 'core/ai/main.bicep' = {
     projectName:projectName
     environmentName:environmentName
     resourceToken:resourceToken
-    location: location
+    location: AIlocation
     keyVaultId: security.outputs.keyVaultID
     appInsightsName: monitor.outputs.applicationInsightsName
     identityName:security.outputs.managedIdentityName
