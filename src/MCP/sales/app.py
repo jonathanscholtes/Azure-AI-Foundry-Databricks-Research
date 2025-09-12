@@ -200,6 +200,50 @@ def get_customers(
 
 
 @app.tool()
+def get_product_category(name: str) -> dict:
+    """
+    Resolve a user-provided product category string into the canonical category 
+    name stored in the database.
+
+    Use this when the category in a user question may be misspelled, pluralized,
+    or formatted differently (e.g., 'Brake Pads' vs 'Brake Pad').
+
+    Returns:
+        {
+            "input": "Brake Pads",
+            "resolved_category": "Brake Pad",
+            "confidence": 0.92
+        }
+    """
+    try:
+        sql = """
+        SELECT p.product_category,
+               levenshtein(lower(p.product_category), lower(%(name)s)) AS distance
+        FROM products p
+        GROUP BY p.product_category
+        ORDER BY distance ASC
+        LIMIT 1
+        """
+        rows = run_dbquery(sql, {"name": name})
+
+        if not rows:
+            return {"input": name, "resolved_category": None, "confidence": 0.0}
+
+        row = rows[0]
+        max_len = max(len(name), len(row["product_category"]))
+        confidence = 1 - (row["distance"] / max_len)
+
+        return {
+            "input": name,
+            "resolved_category": row["product_category"],
+            "confidence": confidence,
+        }
+
+    except Exception as e:
+        logger.exception("Error in get_product_category tool")
+        return {"input": name, "resolved_category": None, "error": str(e)}
+
+@app.tool()
 def get_products(
     product_id: Optional[int] = None,
     category: Optional[str] = None,
