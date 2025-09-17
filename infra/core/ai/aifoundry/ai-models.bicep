@@ -13,7 +13,7 @@ resource gpt4oDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-
   parent: account
   name: 'gpt-4o'
   sku: {
-    capacity: 250
+    capacity: 450
     name: 'GlobalStandard'
   }
   properties: {
@@ -27,6 +27,26 @@ resource gpt4oDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-
   }
 
 }
+
+resource o3MiniDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-06-01' = {
+  parent: account
+  name: 'o3-mini'
+  sku: {
+    capacity: 400
+    name: 'GlobalStandard'
+  }
+  properties: {
+    model: {
+      format: 'OpenAI'
+      name: 'o3-mini'
+      version: '2025-01-31'
+    }
+    versionUpgradeOption: 'OnceCurrentVersionExpired'
+    raiPolicyName: 'Microsoft.DefaultV2'
+  }
+  dependsOn: [gpt4oDeployment]
+}
+
 
 resource embeddingDeployment 'Microsoft.CognitiveServices/accounts/deployments@2025-06-01' = {
   parent: account
@@ -44,5 +64,5 @@ resource embeddingDeployment 'Microsoft.CognitiveServices/accounts/deployments@2
     versionUpgradeOption: 'OnceCurrentVersionExpired'
     raiPolicyName: 'Microsoft.DefaultV2'
   }
-  dependsOn: [gpt4oDeployment]
+  dependsOn: [o3MiniDeployment]
 }

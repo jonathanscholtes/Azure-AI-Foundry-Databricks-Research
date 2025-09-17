@@ -43,6 +43,43 @@ module databricks 'databricks/main.bicep' = {
 
 }
 
+module cosmosDb 'cosmosdb/main.bicep' = {
+  name: 'cosmosDb'
+ 
+  params: {
+    accountName: 'cosmos-${projectName}-${environmentName}-${resourceToken}'
+    location: location
+    databaseName: 'chatdatabase'
+    containers: [
+  {
+    name: 'chathistory' // Container for storing chat sessions and messages (chat history)
+    partitionKeyPaths: [
+      '/id' 
+    ]
+    ttlValue: 86400 // Time-to-live (TTL) for automatic deletion of data after 24 hours (86400 seconds)
+    indexingPolicy: {
+      automatic: true // Automatically index new data
+      indexingMode: 'consistent' // Ensure data is indexed immediately
+      includedPaths: [
+        {
+          path: '/sessionId/?' 
+        }
+      ]
+      excludedPaths: [
+        {
+          path: '/*' // Exclude all other paths from indexing
+        }
+      ]
+    }
+    vectorEmbeddingPolicy: {
+      vectorEmbeddings: [] // Placeholder for future vector embedding configuration
+    }
+  }
+ 
+]
+  }
+}
+
 output storageAccountName string = storageAccountName
 output storageAccountId string = storage.outputs.storageAccountId
 
