@@ -1,5 +1,4 @@
 from azure.cosmos.aio import CosmosClient
-#from semantic_kernel.contents.chat_history import ChatHistory 
 from semantic_kernel.contents import ChatHistory 
 from datetime import datetime
 import uuid
@@ -51,15 +50,15 @@ class CosmosChatHistoryStore:
 
     async def add_message(
         self,
+        history: ChatHistory,
         session_id: str,
         role: ChatRole,
         content: str,
         tool_call_id: str = None,
         function_name: str = None,
-        history: ChatHistory = None
-    ) -> ChatHistory:
-        if history is None:
-            history = await self.load(session_id)
+        
+    ):
+        
 
         # Update ChatHistory based on role
         if role == ChatRole.USER:
@@ -84,4 +83,4 @@ class CosmosChatHistoryStore:
             "Timestamp": datetime.utcnow().isoformat()
         }
         await self._container.create_item(item)
-        return history
+       
