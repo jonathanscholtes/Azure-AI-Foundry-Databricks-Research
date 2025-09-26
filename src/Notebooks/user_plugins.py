@@ -10,12 +10,8 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 
 class SalesPlugin:
-    """Plugin for accessing customer, product and sales order data."""
+    """Plugin for accessing sales data"""
 
-    #@kernel_function
-    #def get_datacenter_documents(query:  Annotated[str, "The search query to perform similarity search"]):
-    #    """Searches the knowledge base using vector similarity."""
-    #    return vector_search(query)
     
     @kernel_function
     def get_orders(
