@@ -66,6 +66,7 @@ resource account 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
 
 var roleDefinitionId = guid('sql-role-definition-', account.id)
 
+
 resource cosmosDbRoleDefinition 'Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions@2021-07-01-preview' = {
   name: roleDefinitionId
   parent: account  

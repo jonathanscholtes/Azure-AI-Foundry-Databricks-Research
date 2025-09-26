@@ -6,7 +6,6 @@
 
 ## Overview  
 
-## 🔧 What You’ll Build
 
 - **Agentic AI with Azure AI Agent Service and Semantic Kernel**  
   Use prebuilt and custom agents to delegate tasks, make decisions, and interact with multiple endpoints - tools. Experiment with orchestration patterns using Semantic Kernel Agent Framework.
@@ -15,7 +14,11 @@
   Connect your agents to external services, such as Azure Databricks, to perform actions like retrieving live data, triggering workflows, or interacting with apps and systems — leveraging Model Context Protocol (MCP) to define tools once and expose them consistently across scalable, modular architectures.
 
 
+
+![design](/media/design.png)
+
 ---
+
 
 
 ## 🛠️ **Steps**
@@ -29,7 +32,21 @@ Step-by-step instructions to deploy **Azure AI Foundry** and all required servic
 - **Azure Databricks** for agents to send spark queries via tool calling
 - **Azure Storage Account** for document storage and data ingestion  
 - **Azure Web App** to enable agent interactions via OpenAPI integrations
-- **Azure Container Apps**  providing agent tools OpenAPI access
+- **Azure Container Apps**  hosting of remote MCP server for agent dynamic tool calling
 
-### 3️⃣ [**Hands-On with Agents**](docs/notebooks.md)  
-Discover interactive Notebooks and guides that walk you through building intelligent, task-driven agents. These curated resources cover:
+---
+
+
+## ♻️ **Clean-Up**
+
+After completing the workshop and testing, ensure you delete any unused Azure resources or remove the entire Resource Group to avoid additional charges.
+
+---
+
+## 📜 License  
+This project is licensed under the [MIT License](LICENSE.md), granting permission for commercial and non-commercial use with proper attribution.
+
+---
+
+## Disclaimer  
+This workshop and demo application are intended for educational and demonstration purposes. It is provided "as-is" without any warranties, and users assume all responsibility for its use.
