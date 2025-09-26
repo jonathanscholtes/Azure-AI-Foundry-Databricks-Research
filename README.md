@@ -4,14 +4,26 @@
 
 # Azure AI Foundry Agent Development for Exploring and Reasoning over Databricks 
 
+# Azure AI Foundry Agent Development for Exploring and Reasoning over Databricks  
+
 ## Overview  
 
+This project demonstrates how to explore and reason over structured data (Databricks) using the **Azure AI Foundry Agent Service** and the **Semantic Kernel Agentic Framework**.  
+
+It includes:  
+- Python function tool calling  
+- OpenAPI endpoints hosted on Azure App Service  
+- Dynamic tool resolution with the **Model Context Protocol (MCP)**, deployed as an HTTP-Streamable remote server on Azure Container Apps  
+
+The solution also highlights **observability** by leveraging **Azure AI Foundry Tracability and Evaluation SDKs** for deeper insights into agent behavior. Additionally, it demonstrates **agent orchestration** with the **Semantic Kernel Orchestration Framework**, enabling advanced reasoning steps for data exploration.  
+
+## Key Features  
 
 - **Agentic AI with Azure AI Agent Service and Semantic Kernel**  
-  Use prebuilt and custom agents to delegate tasks, make decisions, and interact with multiple endpoints - tools. Experiment with orchestration patterns using Semantic Kernel Agent Framework.
+  Build and experiment with prebuilt or custom agents that can delegate tasks, make decisions, and interact with multiple endpoints (tools). Explore orchestration patterns using the Semantic Kernel framework.  
 
-- **Integrations with OpenAPI and MCP**  
-  Connect your agents to external services, such as Azure Databricks, to perform actions like retrieving live data, triggering workflows, or interacting with apps and systems — leveraging Model Context Protocol (MCP) to define tools once and expose them consistently across scalable, modular architectures.
+- **Integration with OpenAPI and MCP**  
+  Extend agents to external services, such as Azure Databricks, to perform actions like retrieving live data, triggering workflows, or interacting with apps and systems. MCP enables defining tools once and exposing them consistently across scalable, modular architectures.  
 
 
 
@@ -21,18 +33,12 @@
 
 
 
-## 🛠️ **Steps**
+## 🛠️ **Core Steps for Solution Implementation**
 
-Follow these key steps to successfully implement and deploy the workshop:
+Follow these key steps to successfully deploy and configure the solution:
 
-### 1️⃣ [**Setup and Solution Deployment**](docs/deployment.md)  
-Step-by-step instructions to deploy **Azure AI Foundry** and all required services for the workshop environment, including:
-
-- **Azure AI Foundry** components: AI Service, AI Hub, Projects, and Compute  
-- **Azure Databricks** for agents to send spark queries via tool calling
-- **Azure Storage Account** for document storage and data ingestion  
-- **Azure Web App** to enable agent interactions via OpenAPI integrations
-- **Azure Container Apps**  hosting of remote MCP server for agent dynamic tool calling
+### 1️⃣ [**Deploy the Solution**](docs/deployment.md)
+-  Instructions for deploying solution, including prerequisites, configuration steps.   
 
 ---
 
