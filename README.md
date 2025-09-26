@@ -4,7 +4,6 @@
 
 # Azure AI Foundry Agent Development for Exploring and Reasoning over Databricks 
 
-# Azure AI Foundry Agent Development for Exploring and Reasoning over Databricks  
 
 ## Overview  
 
