@@ -14,7 +14,7 @@ class Evaluation:
         model_config = {
             "azure_endpoint": environ["AZURE_OPENAI_ENDPOINT"],
             "api_key": environ["AZURE_OPENAI_API_KEY"],
-            "azure_deployment": environ["AZURE_OPENAI_MODEL"],
+            "azure_deployment": environ["AZURE_OPENAI_CHAT_MODEL"],
             "api_version": environ["AZURE_OPENAI_API_VERSION"],
         }
 
