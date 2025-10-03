@@ -39,6 +39,9 @@ Follow these key steps to successfully deploy and configure the solution:
 ### 1️⃣ [**Deploy the Solution**](docs/deployment.md)
 -  Instructions for deploying solution, including prerequisites, configuration steps.   
 
+### 2️⃣ [**Hands-On with Agents**](docs/notebooks.md)  
+ - Work through practical notebooks that demonstrate agents built to talk with your data and generate insights through analysis. 
+
 ---
 
 
